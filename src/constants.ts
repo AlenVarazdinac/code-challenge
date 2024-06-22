@@ -1,0 +1,9 @@
+export const CONSTANTS = {
+  START_CHAR: '@',
+  END_CHAR: 'x',
+  VERTICAL_PIPE: '|',
+  HORIZONTAL_PIPE: '-',
+  INTERSECTION: '+',
+  EMPTY_SPACE: ' ',
+  MAX_ITERATIONS: 1000,
+}
