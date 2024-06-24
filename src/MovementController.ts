@@ -1,5 +1,6 @@
-import { CONSTANTS } from "./constants"
-import { isLetter } from "./utils"
+import { CONSTANTS } from './constants'
+import { isLetter } from './utils'
+import { BrokenPathError } from './errors'
 
 export class MovementController {
   private map: MapGrid
@@ -23,7 +24,7 @@ export class MovementController {
   public move(direction: Direction): void {
     const nextChar = this.getNextChar(direction)
     if (nextChar === CONSTANTS.EMPTY_SPACE || nextChar === undefined) {
-      throw new BrokenPathError('Broken path: next position is invalid')
+      throw new BrokenPathError('Broken path')
     }
     const directionChange = this.directions[direction]
     this.currentPosition = {

@@ -1,5 +1,5 @@
 import { MovementController } from './MovementController';
-import { findStart, getCurrentChar } from './mapFunctions'
+import { findEndPosition, findStart, getCurrentChar, validateSingleStart } from './mapFunctions'
 import { isLetter } from './utils'
 import { CONSTANTS } from './constants'
 import { BrokenPathError } from './errors'
@@ -16,6 +16,9 @@ export class PathTraversal {
     this.map = map
     // this.position = findStart(map)
     const startPosition = findStart(map)
+    validateSingleStart(map)
+    const hasEndPosition = findEndPosition(map)
+    if (!hasEndPosition) throw new Error('End character not found')
     this.movementController = new MovementController(map, startPosition)
     this.direction = 'right' // Initial direction
     this.collectedLetters = []
@@ -100,16 +103,29 @@ export class PathTraversal {
   private changeDirectionAtIntersection(): void {
     console.log('At an intersection, checking for new direction')
     const possibleDirections: Direction[] = ['up', 'down', 'left', 'right']
+    let validDirections: Direction[] = []
+
+    if (this.movementController.canMove(this.direction)) {
+      console.log(`Maintaining current direction at intersection: ${this.direction}`)
+      return
+    }
+
     for (const dir of possibleDirections) {
       if (
         dir !== this.getOppositeDirection(this.direction) &&
         this.movementController.canMove(dir)
       ) {
-        this.direction = dir
-        console.log(`New direction at intersection: ${this.direction}`)
-        return
+        validDirections.push(dir)
       }
     }
+
+    console.log('Valid directions:', validDirections)
+
+    if (validDirections.length > 1) throw new Error('Fork in path')
+    if (validDirections.length === 0) throw new Error('No valid direction found at intersection')
+
+    this.direction = validDirections[0]
+    console.log(`New direction at intersection: ${this.direction}`)
   }
 
   private changeDirectionForPipe(char: string): void {
@@ -120,7 +136,7 @@ export class PathTraversal {
       this.direction = this.movementController.canMove('up') ? 'up' : 'down'
       console.log(`Changing to vertical direction: ${this.direction}`)
     } else if (
-      char === '-' &&
+      char === CONSTANTS.HORIZONTAL_PIPE &&
       (this.direction === 'up' || this.direction === 'down')
     ) {
       this.direction = this.movementController.canMove('left') ? 'left' : 'right'

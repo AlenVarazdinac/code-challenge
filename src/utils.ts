@@ -1,5 +1,5 @@
 export const isLetter = (char: string): boolean => {
-  return /[A-Z]/.test(char)
+  return /[A-Zx]/.test(char)
 }
 
 export const getOppositeDirection = (dir: Direction): Direction => {
