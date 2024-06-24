@@ -157,17 +157,16 @@ describe('PathTraversal', () => {
 
   test('Broken path', () => {
     const map = [
-      ['@', '-', '-', 'A', '-', '+'],
-      [' ', ' ', ' ', ' ', ' ', '|'],
-      [' ', ' ', ' ', ' ', ' ', ' '],
-      [' ', ' ', ' ', ' ', ' ', ' '],
+      ['@', '-', '-', 'A', '-', '+', ' ', ' '],
+      [' ', ' ', ' ', ' ', ' ', '|', ' ', ' '],
+      [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+      [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
       [' ', ' ', ' ', ' ', ' ', 'B', '-', 'x']
     ]
     const traversal = new PathTraversal(map)
     expect(() => traversal.traverse()).toThrow('Broken path')
   })
 
-  // TODO: Fix
   test('Multiple starting paths', () => {
     const map = [
       ['x', '-', 'B', '-', '@', '-', 'A', '-', 'x']

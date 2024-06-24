@@ -1,5 +1,10 @@
-import { MovementController } from './MovementController';
-import { findEndPosition, findStart, getCurrentChar, validateSingleStart } from './mapFunctions'
+import { MovementController } from './MovementController'
+import {
+  findEndPosition,
+  findStart,
+  getCurrentChar,
+  validateSingleStart
+} from './mapFunctions'
 import { isLetter } from './utils'
 import { CONSTANTS } from './constants'
 import { BrokenPathError } from './errors'
@@ -38,7 +43,7 @@ export class PathTraversal {
 
   private changeDirection(): void {
     const position = this.getCurrentPosition()
-    const char = getCurrentChar(this.map, position.y, position.x)
+    const char = this.getCurrentChar()
     console.log(
       `Changing direction at: (${position.x}, ${position.y}), Current char: '${char}'`
     )
@@ -48,6 +53,7 @@ export class PathTraversal {
     }
 
     if (this.movementController.canMove(this.direction)) {
+      if (this.getCurrentChar() === '+') throw new Error('Fake turn')
       console.log(`Continuing in the same direction: ${this.direction}`)
       return
     }
@@ -106,7 +112,9 @@ export class PathTraversal {
     let validDirections: Direction[] = []
 
     if (this.movementController.canMove(this.direction)) {
-      console.log(`Maintaining current direction at intersection: ${this.direction}`)
+      console.log(
+        `Maintaining current direction at intersection: ${this.direction}`
+      )
       return
     }
 
@@ -122,7 +130,8 @@ export class PathTraversal {
     console.log('Valid directions:', validDirections)
 
     if (validDirections.length > 1) throw new Error('Fork in path')
-    if (validDirections.length === 0) throw new Error('No valid direction found at intersection')
+    if (validDirections.length === 0)
+      throw new Error('No valid direction found at intersection')
 
     this.direction = validDirections[0]
     console.log(`New direction at intersection: ${this.direction}`)
@@ -139,7 +148,9 @@ export class PathTraversal {
       char === CONSTANTS.HORIZONTAL_PIPE &&
       (this.direction === 'up' || this.direction === 'down')
     ) {
-      this.direction = this.movementController.canMove('left') ? 'left' : 'right'
+      this.direction = this.movementController.canMove('left')
+        ? 'left'
+        : 'right'
       console.log(`Changing to horizontal direction: ${this.direction}`)
     }
   }
@@ -195,8 +206,24 @@ export class PathTraversal {
     )
   }
 
+  private checkForMultipleStartingPaths(): void {
+    let validPaths = 0
+    const directions: Direction[] = ['up', 'down', 'left', 'right']
+
+    for (const dir of directions) {
+      if (this.movementController.canMove(dir)) {
+        validPaths++
+      }
+    }
+
+    if (validPaths > 1) {
+      throw new Error('Multiple starting paths')
+    }
+  }
+
   public traverse(): { letters: string; path: string } {
     this.initializeTraversal()
+    this.checkForMultipleStartingPaths()
 
     let iterations = 0
 
@@ -215,9 +242,7 @@ export class PathTraversal {
   private initializeTraversal(): void {
     const position = this.getCurrentPosition()
     this.path = CONSTANTS.START_CHAR
-    console.log(
-      `Starting traverse at: (${position.x}, ${position.y})`
-    )
+    console.log(`Starting traverse at: (${position.x}, ${position.y})`)
   }
 
   private isAtEnd(): boolean {
