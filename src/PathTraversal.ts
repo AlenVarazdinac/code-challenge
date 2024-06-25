@@ -11,9 +11,9 @@ import { BrokenPathError } from './errors'
 
 export class PathTraversal {
   private map: MapGrid
-  private movementController: MovementController
+  private _movementController: MovementController
   // private position: Position
-  private direction: Direction
+  private _direction: Direction
   private collectedLetters: CollectedLetter[]
   private path: string
 
@@ -24,17 +24,26 @@ export class PathTraversal {
     validateSingleStart(map)
     const hasEndPosition = findEndPosition(map)
     if (!hasEndPosition) throw new Error('End character not found')
-    this.movementController = new MovementController(map, startPosition)
-    this.direction = 'right' // Initial direction
+    this._movementController = new MovementController(map, startPosition)
+    this._direction = 'right'
     this.collectedLetters = []
-    this.path = '' // Initialize as empty string
+    this.path = ''
   }
 
-  private readonly directions = {
-    up: { x: 0, y: -1 },
-    down: { x: 0, y: 1 },
-    left: { x: -1, y: 0 },
-    right: { x: 1, y: 0 }
+  public set direction(direction: Direction) {
+    this._direction = direction
+  }
+
+  public get direction(): Direction {
+    return this._direction
+  }
+
+  public get movementController(): MovementController {
+    return this._movementController
+  }
+
+  public set movementController(controller: MovementController) {
+    this._movementController = controller
   }
 
   private getCurrentPosition(): Position {

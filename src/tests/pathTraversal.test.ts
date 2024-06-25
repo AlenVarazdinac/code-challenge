@@ -1,4 +1,4 @@
-import { PathTraversal } from './../src/PathTraversal'
+import { PathTraversal } from '../PathTraversal'
 
 describe('PathTraversal', () => {
   // Valid maps
@@ -175,7 +175,6 @@ describe('PathTraversal', () => {
     expect(() => traversal.traverse()).toThrow('Multiple starting paths')
   })
 
-  // TODO: Fix
   test('Fake turn', () => {
     const map = [
       ['@', '-', 'A', '-', '+', '-', 'B', '-', 'x']
