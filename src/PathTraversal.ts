@@ -1,4 +1,5 @@
 import { MovementController } from './MovementController'
+import { LetterCollector } from './LetterCollector'
 import {
   findEndPosition,
   findStart,
@@ -8,25 +9,23 @@ import {
 import { isLetter } from './utils'
 import { CONSTANTS } from './constants'
 import { BrokenPathError } from './errors'
+import { checkForInfiniteLoop } from './utils'
 
 export class PathTraversal {
   private map: MapGrid
   private _movementController: MovementController
-  // private position: Position
+  private letterCollector: LetterCollector
   private _direction: Direction
-  private collectedLetters: CollectedLetter[]
   private path: string
 
   constructor(map: MapGrid) {
     this.map = map
-    // this.position = findStart(map)
     const startPosition = findStart(map)
     validateSingleStart(map)
-    const hasEndPosition = findEndPosition(map)
-    if (!hasEndPosition) throw new Error('End character not found')
+    findEndPosition(map)
     this._movementController = new MovementController(map, startPosition)
+    this.letterCollector = new LetterCollector()
     this._direction = 'right'
-    this.collectedLetters = []
     this.path = ''
   }
 
@@ -177,44 +176,6 @@ export class PathTraversal {
     }
   }
 
-  private collectLetter(char: string): void {
-    if (!isLetter(char)) {
-      console.log(`Attempted to collect non-letter character: ${char}`)
-      return
-    }
-
-    const position = this.getCurrentPosition()
-    const currentPosition = { x: position.x, y: position.y }
-
-    if (this.isLetterAlreadyCollected(char, currentPosition)) {
-      console.log(
-        `Letter ${char} already collected at position (${currentPosition.x}, ${currentPosition.y}), skipping`
-      )
-      return
-    }
-
-    this.addNewCollectedLetter(char, currentPosition)
-  }
-
-  private isLetterAlreadyCollected(
-    letter: string,
-    position: Position
-  ): boolean {
-    return this.collectedLetters.some(
-      (cl) =>
-        cl.letter === letter &&
-        cl.position.x === position.x &&
-        cl.position.y === position.y
-    )
-  }
-
-  private addNewCollectedLetter(letter: string, position: Position): void {
-    this.collectedLetters.push({ letter, position })
-    console.log(
-      `Added letter: ${letter}, at position (${position.x}, ${position.y})`
-    )
-  }
-
   private checkForMultipleStartingPaths(): void {
     let validPaths = 0
     const directions: Direction[] = ['up', 'down', 'left', 'right']
@@ -243,7 +204,7 @@ export class PathTraversal {
       this.updatePath()
     }
 
-    this.checkForInfiniteLoop(iterations)
+    checkForInfiniteLoop(iterations)
 
     return this.getTraversalResult()
   }
@@ -274,7 +235,7 @@ export class PathTraversal {
     )
 
     if (isLetter(char)) {
-      this.collectLetter(char)
+      this.letterCollector.collectLetter(char, position)
     }
 
     this.changeDirection()
@@ -297,19 +258,8 @@ export class PathTraversal {
     console.log(`Current path: ${this.path}`)
   }
 
-  private checkForInfiniteLoop(iterations: number): void {
-    if (iterations >= CONSTANTS.MAX_ITERATIONS) {
-      console.log('Max iterations reached, possible infinite loop')
-      throw new Error('Possible infinite loop detected')
-    }
-  }
-
-  private getCollectedLettersAsString(): string {
-    return this.collectedLetters.map((cl) => cl.letter).join('')
-  }
-
   private getTraversalResult(): { letters: string; path: string } {
-    const letters = this.getCollectedLettersAsString()
+    const letters = this.letterCollector.getCollectedLetters()
     return { letters, path: this.path }
   }
 

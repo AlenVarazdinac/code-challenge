@@ -39,10 +39,6 @@ describe('PathTraversal', () => {
         mockMovementController.getCurrentPosition.mockReturnValue({ x: position.x + 1, y: position.y })
       }
     })
-
-    jest.requireMock('../mapFunctions').getCurrentChar.mockImplementation((map: MapGrid, y:number, x:number) => {
-      return map[y][x]
-    })
   })
 
   test('traverse should collect letters and form a path', () => {

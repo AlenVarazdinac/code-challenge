@@ -36,16 +36,9 @@ export class MovementController {
   public canMove(direction: Direction): boolean {
     const nextChar = this.getNextChar(direction)
     console.log(`Checking if can move ${direction}, next char: '${nextChar}'`)
-    const result =
-      direction === 'up' || direction === 'down'
-        ? nextChar === CONSTANTS.VERTICAL_PIPE ||
-          nextChar === CONSTANTS.INTERSECTION ||
-          isLetter(nextChar)
-        : nextChar === CONSTANTS.HORIZONTAL_PIPE ||
-          nextChar === CONSTANTS.INTERSECTION ||
-          isLetter(nextChar)
-    console.log(`Can move ${direction}: ${result}`)
-    return result
+    const isVertical = direction === 'up' || direction === 'down'
+    const validChar = isVertical ? CONSTANTS.VERTICAL_PIPE : CONSTANTS.HORIZONTAL_PIPE
+    return nextChar === validChar || nextChar === CONSTANTS.INTERSECTION || isLetter(nextChar)
   }
 
   private getNextChar(direction: Direction): string {
