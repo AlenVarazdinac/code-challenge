@@ -21,7 +21,6 @@ describe('PathTraversal', () => {
     pathTraversal = new PathTraversal(map) as PathTraversal
 
     pathTraversal.movementController = mockMovementController
-    pathTraversal.direction = 'right'
 
     // Setup canMove mock to return true for right movement from the start
     mockMovementController.canMove.mockImplementation((direction: string) => {
@@ -33,11 +32,9 @@ describe('PathTraversal', () => {
     })
 
     // Setup move mock to update the position
-    mockMovementController.move.mockImplementation((direction: string) => {
+    mockMovementController.move.mockImplementation(() => {
       const position = mockMovementController.getCurrentPosition()
-      if (direction === 'right') {
-        mockMovementController.getCurrentPosition.mockReturnValue({ x: position.x + 1, y: position.y })
-      }
+      mockMovementController.getCurrentPosition.mockReturnValue({ x: position.x + 1, y: position.y })
     })
   })
 

@@ -1,6 +1,6 @@
 import { isLetter } from "./utils"
 
-export class LetterCollector {
+export class LetterController {
   private collectedLetters: CollectedLetter[] = []
 
   public collectLetter(char: string, position: Position) : void {

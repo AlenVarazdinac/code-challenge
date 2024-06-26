@@ -18,12 +18,15 @@ describe('MovementController', () => {
   })
 
   test('move should update the current position', () => {
-    movementController.move('right')
+    movementController.move()
     expect(movementController.getCurrentPosition()).toEqual({ x: 1, y: 0 })
   })
 
   test('move should throw BrokenPathError when moving to empty space', () => {
-    expect(() => movementController.move('up')).toThrow(BrokenPathError)
+    movementController['currentPosition'] = { x: 0, y: 1 }
+    movementController['direction'] = 'right'
+
+    expect(() => movementController.move()).toThrow(BrokenPathError)
   })
 
   test('canMove should return true for valid moves', () => {
