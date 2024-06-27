@@ -1,5 +1,5 @@
 import { CONSTANTS } from './constants'
-import { isLetter } from './utils'
+import { isLetter, directionCoordinates, directions } from './utils'
 import { BrokenPathError } from './errors'
 import { MapController } from './MapController'
 
@@ -8,12 +8,6 @@ export class MovementController {
   private mapController: MapController
   private currentPosition: Position
   private direction: Direction
-  private directions: Record<Direction, Position> = {
-    up: { x: 0, y: -1 },
-    down: { x: 0, y: 1 },
-    left: { x: -1, y: 0 },
-    right: { x: 1, y: 0 }
-  }
 
   constructor(startPosition: Position) {
     this.mapController = MapController.getInstance()
@@ -31,7 +25,7 @@ export class MovementController {
     if (nextChar === CONSTANTS.EMPTY_SPACE || nextChar === undefined) {
       throw new BrokenPathError('Broken path')
     }
-    const directionChange = this.directions[this.direction]
+    const directionChange = directionCoordinates[this.direction]
     this.currentPosition = {
       x: this.currentPosition.x + directionChange.x,
       y: this.currentPosition.y + directionChange.y
@@ -40,7 +34,6 @@ export class MovementController {
 
   public canMove(direction: Direction): boolean {
     const nextChar = this.getNextChar(direction)
-    console.log(`Checking if can move ${direction}, next char: '${nextChar}'`)
     const isVertical = direction === 'up' || direction === 'down'
     const validChar = isVertical
       ? CONSTANTS.VERTICAL_PIPE
@@ -54,7 +47,7 @@ export class MovementController {
 
   private getNextChar(direction: Direction): string {
     const { x, y } = this.currentPosition
-    const { x: directionX, y: directionY } = this.directions[direction]
+    const { x: directionX, y: directionY } = directionCoordinates[direction]
     const newY = y + directionY
     const newX = x + directionX
 
@@ -84,18 +77,11 @@ export class MovementController {
   }
 
   private changeDirectionAtIntersection(): void {
-    console.log('At an intersection, checking for new direction')
-    const possibleDirections: Direction[] = ['up', 'down', 'left', 'right']
     let validDirections: Direction[] = []
 
-    if (this.canMove(this.direction)) {
-      console.log(
-        `Maintaining current direction at intersection: ${this.direction}`
-      )
-      return
-    }
+    if (this.canMove(this.direction)) return
 
-    for (const dir of possibleDirections) {
+    for (const dir of directions) {
       if (
         dir !== this.getOppositeDirection(this.direction) &&
         this.canMove(dir)
@@ -104,14 +90,11 @@ export class MovementController {
       }
     }
 
-    console.log('Valid directions:', validDirections)
-
     if (validDirections.length > 1) throw new Error('Fork in path')
     if (validDirections.length === 0)
       throw new Error('No valid direction found at intersection')
 
     this.direction = validDirections[0]
-    console.log(`New direction at intersection: ${this.direction}`)
   }
 
   private isAtIntersection(char: string): boolean {
@@ -122,12 +105,9 @@ export class MovementController {
   }
 
   private setInitialDirection(): void {
-    console.log('At start character, determining initial direction')
-    const directions: Direction[] = ['down', 'right', 'left', 'up']
     for (const dir of directions) {
       if (this.canMove(dir)) {
         this.direction = dir
-        console.log(`Initial direction set to: ${this.direction}`)
         return
       }
     }
@@ -140,9 +120,6 @@ export class MovementController {
       char === CONSTANTS.START_CHAR &&
       (position.x !== 0 || position.y !== 0)
     ) {
-      console.log(
-        'Passed through start character, continuing in current direction'
-      )
       return true
     }
     if (char === CONSTANTS.START_CHAR) {
@@ -153,11 +130,7 @@ export class MovementController {
   }
 
   public changeDirection(): void {
-    const position = this.getCurrentPosition()
     const char = this.getCurrentChar()
-    console.log(
-      `Changing direction at: (${position.x}, ${position.y}), Current char: '${char}'`
-    )
 
     if (this.isAtStart(char)) {
       return
@@ -166,7 +139,6 @@ export class MovementController {
     if (this.canMove(this.direction)) {
       if (this.getCurrentChar() === CONSTANTS.INTERSECTION)
         throw new Error('Fake turn')
-      console.log(`Continuing in the same direction: ${this.direction}`)
       return
     }
 
@@ -176,8 +148,6 @@ export class MovementController {
     }
 
     this.changeDirectionForPipe(char)
-
-    console.log(`Final direction: ${this.direction}`)
   }
 
   private changeDirectionForPipe(char: string): void {
@@ -194,7 +164,6 @@ export class MovementController {
       if (isHorizontal) {
         this.direction = this.canMove('left') ? 'left' : 'right'
       }
-      console.log(`Changing direction to: ${this.direction}`)
     }
   }
 

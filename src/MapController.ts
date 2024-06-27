@@ -1,4 +1,5 @@
 import { CONSTANTS } from './constants'
+import { directions } from './utils'
 import { MovementController } from './MovementController'
 
 export class MapController {
@@ -24,7 +25,6 @@ export class MapController {
     for (let y = 0; y < this.map.length; y++) {
       for (let x = 0; x < this.map[y].length; x++) {
         if (this.map[y][x] === CONSTANTS.START_CHAR) {
-          console.log(`Start found at: (${x}, ${y})`)
           return { x, y }
         }
       }
@@ -63,7 +63,6 @@ export class MapController {
     movementController: MovementController
   ): void {
     let validPaths = 0
-    const directions: Direction[] = ['up', 'down', 'left', 'right']
 
     for (const dir of directions) {
       if (movementController.canMove(dir)) {

@@ -1,6 +1,6 @@
 import { MovementController } from './MovementController'
 import { LetterController } from './LetterController'
-import { isLetter } from './utils'
+import { isLetter, directions } from './utils'
 import { CONSTANTS } from './constants'
 import { BrokenPathError } from './errors'
 import { checkForInfiniteLoop } from './utils'
@@ -36,7 +36,6 @@ export class PathTraversal {
 
   private checkForMultipleStartingPaths(): void {
     let validPaths = 0
-    const directions: Direction[] = ['up', 'down', 'left', 'right']
 
     for (const dir of directions) {
       if (this.movementController.canMove(dir)) {
@@ -72,14 +71,12 @@ export class PathTraversal {
   private initializeTraversal(): void {
     const position = this.getCurrentPosition()
     this.path = CONSTANTS.START_CHAR
-    console.log(`Starting traverse at: (${position.x}, ${position.y})`)
   }
 
   // MapController
   private isAtEnd(): boolean {
     const char = this.getCurrentChar()
     if (char === CONSTANTS.END_CHAR) {
-      console.log('Reached end (x), breaking loop')
       if (!this.path.endsWith(CONSTANTS.END_CHAR)) {
         this.path += CONSTANTS.END_CHAR
       }
@@ -91,9 +88,6 @@ export class PathTraversal {
   private processCurrentPosition(): void {
     const position = this.getCurrentPosition()
     const char = this.getCurrentChar()
-    console.log(
-      `Current char: '${char}', Position: (${position.x}, ${position.y})`
-    )
 
     if (isLetter(char)) {
       this.letterController.collectLetter(char, position)
@@ -112,7 +106,6 @@ export class PathTraversal {
     ) {
       this.path += newChar
     }
-    console.log(`Current path: ${this.path}`)
   }
 
   private getTraversalResult(): { letters: string; path: string } {
