@@ -1,24 +1,24 @@
 import { PathTraversal } from '../PathTraversal'
 import { MovementController } from '../MovementController'
+import { MapController } from '../MapController'
 
 // Mock dependencies
 jest.mock('../MovementController')
-jest.mock('../mapFunctions', () => ({
-  findStart: jest.fn(() => ({ x: 0, y: 0 })),
-  findEndPosition: jest.fn(() => true),
-  getCurrentChar: jest.fn((map, y, x) => map[y][x]),
-  validateSingleStart: jest.fn()
-}))
 
 describe('PathTraversal', () => {
   let pathTraversal: PathTraversal
+  let mockMapController: MapController
   let mockMovementController: jest.Mocked<MovementController>
 
   beforeEach(() => {
     const map = [['@', '-', 'A', '-', 'x']] as MapGrid
+
+    mockMapController = MapController.getInstance()
+    mockMapController.map = map
+
     const MockedMovementController = MovementController as jest.MockedClass<typeof MovementController>
-    mockMovementController = new MockedMovementController(map, { x: 0, y: 0 }) as jest.Mocked<MovementController>
-    pathTraversal = new PathTraversal(map) as PathTraversal
+    mockMovementController = new MockedMovementController({ x: 0, y: 0 }) as jest.Mocked<MovementController>
+    pathTraversal = new PathTraversal() as PathTraversal
 
     pathTraversal.movementController = mockMovementController
 

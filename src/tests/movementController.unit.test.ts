@@ -1,8 +1,10 @@
+import { MapController } from '../MapController'
 import { MovementController } from '../MovementController'
 import { BrokenPathError } from '../errors'
 
 describe('MovementController', () => {
   let movementController: MovementController
+  let mapController: MapController
 
   beforeEach(() => {
     const map = [
@@ -10,7 +12,11 @@ describe('MovementController', () => {
       [' ', ' ', ' ', ' ', '|'],
       ['x', '-', 'B', '-', '@']
     ]
-    movementController = new MovementController(map, { x: 0, y: 0 })
+
+    mapController = MapController.getInstance()
+    mapController.map = map
+
+    movementController = new MovementController({ x: 0, y: 0 })
   })
 
   test('getCurrentPosition should return the current position', () => {

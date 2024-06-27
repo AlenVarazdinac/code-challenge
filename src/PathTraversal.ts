@@ -1,28 +1,23 @@
 import { MovementController } from './MovementController'
 import { LetterController } from './LetterController'
-import {
-  findEndPosition,
-  findStart,
-  getCurrentChar,
-  validateSingleStart
-} from './mapFunctions'
 import { isLetter } from './utils'
 import { CONSTANTS } from './constants'
 import { BrokenPathError } from './errors'
 import { checkForInfiniteLoop } from './utils'
+import { MapController } from './MapController'
 
 export class PathTraversal {
-  private map: MapGrid
   private _movementController: MovementController
   private letterController: LetterController
+  private mapController: MapController
   private path: string
 
-  constructor(map: MapGrid) {
-    this.map = map
-    const startPosition = findStart(map)
-    validateSingleStart(map)
-    findEndPosition(map)
-    this._movementController = new MovementController(map, startPosition)
+  constructor() {
+    this.mapController = MapController.getInstance()
+    const startPosition = this.mapController.findStart()
+    this.mapController.validateSingleStart()
+    this.mapController.findEndPosition()
+    this._movementController = new MovementController(startPosition)
     this.letterController = new LetterController()
     this.path = ''
   }
@@ -127,6 +122,6 @@ export class PathTraversal {
 
   private getCurrentChar(): string {
     const position = this.getCurrentPosition()
-    return getCurrentChar(this.map, position.y, position.x)
+    return this.mapController.getCurrentChar(position.y, position.x)
   }
 }

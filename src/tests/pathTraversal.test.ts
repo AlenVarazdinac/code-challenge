@@ -1,6 +1,12 @@
+import { MapController } from '../MapController'
 import { PathTraversal } from '../PathTraversal'
 
 describe('PathTraversal', () => {
+  let mapController: MapController
+  beforeAll(() => {
+    mapController = MapController.getInstance()
+  })
+
   // Valid maps
   test('Basic example', () => {
     const map = [
@@ -11,7 +17,9 @@ describe('PathTraversal', () => {
       [' ', ' ', ' ', ' ', '+', '-', '-', '-', '+']
     ]
 
-    const traversal = new PathTraversal(map)
+    mapController.map = map
+
+    const traversal = new PathTraversal()
     const result = traversal.traverse()
     expect(result.letters).toBe('ACB')
     expect(result.path).toBe('@---A---+|C|+---+|+-B-x')
@@ -27,7 +35,10 @@ describe('PathTraversal', () => {
       [' ', ' ', '|', ' ', ' ', ' ', ' ', ' ', ' ', '|'],
       [' ', ' ', '+', '-', '-', '-', 'D', '-', '-', '+']
     ]
-    const traversal = new PathTraversal(map)
+
+    mapController.map = map
+
+    const traversal = new PathTraversal()
     const result = traversal.traverse()
     expect(result.letters).toBe('ABCD')
     expect(result.path).toBe('@|A+---B--+|+--C-+|-||+---D--+|x')
@@ -41,7 +52,10 @@ describe('PathTraversal', () => {
       [' ', ' ', ' ', ' ', '|', ' ', ' ', ' ', '|'],
       [' ', ' ', ' ', ' ', '+', '-', '-', '-', 'C']
     ]
-    const traversal = new PathTraversal(map)
+
+    mapController.map = map
+
+    const traversal = new PathTraversal()
     const result = traversal.traverse()
     expect(result.letters).toBe('ACB')
     expect(result.path).toBe('@---A---+|||C---+|+-B-x')
@@ -58,7 +72,10 @@ describe('PathTraversal', () => {
       [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '|'],
       [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x']
     ]
-    const traversal = new PathTraversal(map)
+
+    mapController.map = map
+
+    const traversal = new PathTraversal()
     const result = traversal.traverse()
     expect(result.letters).toBe('GOONIES')
     expect(result.path).toBe('@-G-O-+|+-+|O||+-O-N-+|I|+-+|+-I-+|ES|x')
@@ -71,7 +88,10 @@ describe('PathTraversal', () => {
       ['@', 'B', '+', ' ', '+', '+', ' ', 'H'],
       [' ', '+', '+', ' ', ' ', ' ', ' ', 'x']
     ]
-    const traversal = new PathTraversal(map)
+
+    mapController.map = map
+
+    const traversal = new PathTraversal()
     const result = traversal.traverse()
     expect(result.letters).toBe('BLAH')
     expect(result.path).toBe('@B+++B|+-L-+A+++A-+Hx')
@@ -83,7 +103,10 @@ describe('PathTraversal', () => {
       [' ', ' ', ' ', ' ', ' ', '|', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
       [' ', ' ', ' ', ' ', ' ', '+', '-', 'B', '-', '-', 'x', '-', 'C', '-', '-', 'D']
     ]
-    const traversal = new PathTraversal(map)
+
+    mapController.map = map
+
+    const traversal = new PathTraversal()
     const result = traversal.traverse()
     expect(result.letters).toBe('AB')
     expect(result.path).toBe('@-A--+|+-B--x')
@@ -98,7 +121,10 @@ describe('PathTraversal', () => {
       [' ', ' ', ' ', ' ', '|', ' ', ' ', ' ', '|'],
       [' ', ' ', ' ', ' ', '+', '-', '-', '-', '+']
     ]
-    expect(() => new PathTraversal(map)).toThrow('Missing start character')
+
+    mapController.map = map
+
+    expect(() => new PathTraversal()).toThrow('Missing start character')
   })
 
   test('Missing end character', () => {
@@ -109,7 +135,10 @@ describe('PathTraversal', () => {
       [' ', ' ', ' ', ' ', '|', ' ', ' ', '|'],
       [' ', ' ', ' ', ' ', '+', '-', '-', '+']
     ]
-    expect(() => new PathTraversal(map)).toThrow('End character not found')
+
+    mapController.map = map
+
+    expect(() => new PathTraversal()).toThrow('End character not found')
   })
 
   test('Multiple starts', () => {
@@ -120,7 +149,9 @@ describe('PathTraversal', () => {
       [' ', ' ', ' ', ' ', '|', ' ', ' ', '|'],
       [' ', ' ', ' ', ' ', '+', '-', '-', '+']
     ]
-    expect(() => new PathTraversal(map)).toThrow('Multiple starts')
+
+    mapController.map = map
+    expect(() => new PathTraversal()).toThrow('Multiple starts')
 
     map = [
       ['@', '-', '-', 'A', '-', '-', '-', '+'],
@@ -129,7 +160,9 @@ describe('PathTraversal', () => {
       [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x'],
       [' ', ' ', ' ', '@', '-', 'B', '-', '+']
     ]
-    expect(() => new PathTraversal(map)).toThrow('Multiple starts')
+
+    mapController.map = map
+    expect(() => new PathTraversal()).toThrow('Multiple starts')
 
     map = [
       [' ', '@', '-', '-', 'A', '-', '-', 'x'],
@@ -138,7 +171,9 @@ describe('PathTraversal', () => {
       [' ', ' ', ' ', ' ', '|', ' ', ' ', ' '],
       [' ', ' ', ' ', ' ', '@', ' ', ' ', ' ']
     ]
-    expect(() => new PathTraversal(map)).toThrow('Multiple starts')
+
+    mapController.map = map
+    expect(() => new PathTraversal()).toThrow('Multiple starts')
   })
 
   test('Fork in path', () => {
@@ -151,7 +186,10 @@ describe('PathTraversal', () => {
       [' ', ' ', ' ', '|', ' ', ' ', ' ', '|'],
       [' ', ' ', ' ', '+', '-', '-', '-', '+'],
     ]
-    const traversal = new PathTraversal(map)
+
+    mapController.map = map
+
+    const traversal = new PathTraversal()
     expect(() => traversal.traverse()).toThrow('Fork in path')
   })
 
@@ -163,7 +201,10 @@ describe('PathTraversal', () => {
       [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
       [' ', ' ', ' ', ' ', ' ', 'B', '-', 'x']
     ]
-    const traversal = new PathTraversal(map)
+
+    mapController.map = map
+
+    const traversal = new PathTraversal()
     expect(() => traversal.traverse()).toThrow('Broken path')
   })
 
@@ -171,7 +212,10 @@ describe('PathTraversal', () => {
     const map = [
       ['x', '-', 'B', '-', '@', '-', 'A', '-', 'x']
     ]
-    const traversal = new PathTraversal(map)
+
+    mapController.map = map
+
+    const traversal = new PathTraversal()
     expect(() => traversal.traverse()).toThrow('Multiple starting paths')
   })
 
@@ -179,7 +223,10 @@ describe('PathTraversal', () => {
     const map = [
       ['@', '-', 'A', '-', '+', '-', 'B', '-', 'x']
     ]
-    const traversal = new PathTraversal(map)
+
+    mapController.map = map
+
+    const traversal = new PathTraversal()
     expect(() => traversal.traverse()).toThrow('Fake turn')
   })
 })

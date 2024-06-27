@@ -1,6 +1,7 @@
+import { MapController } from "./MapController"
 import { PathTraversal } from "./PathTraversal"
 
-const map = [
+const map: MapGrid = [
   ['@', '-', '-', '-', 'A', '-', '-', '-', '+'],
   [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '|'],
   ['x', '-', 'B', '-', '+', ' ', ' ', ' ', 'C'],
@@ -12,7 +13,7 @@ const map = [
 // @---A---+|C|+---+|+-B-x
 // @---A---+|C|+---+|+-B-x - received
 
-// const map = [
+// const map: MapGrid = [
 //   ['@', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
 //   ['|', ' ', '+', '-', 'C', '-', '-', '+'],
 //   ['A', ' ', '|', ' ', ' ', ' ', ' ', '|'],
@@ -26,7 +27,7 @@ const map = [
 // @|A+---B--+|+--C-+|-||+---D--+|x
 // @|A+---B--+|+--C-+|-||+---D--+|x - received
 
-// const map = [
+// const map: MapGrid = [
 //   ['@', '-', '-', '-', 'A', '-', '-', '-', '+'],
 //   [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '|'],
 //   ['x', '-', 'B', '-', '+', ' ', ' ', ' ', '|'],
@@ -38,7 +39,7 @@ const map = [
 // @---A---+|||C---+|+-B-x
 // @---A---+|||C---+|+-B-x - received
 
-// const map = [
+// const map: MapGrid = [
 //   [' ', ' ', ' ', ' ', '+', '-', 'O', '-', 'N', '-', '+', ' ', ' '],
 //   [' ', ' ', ' ', ' ', '|', ' ', ' ', ' ', ' ', ' ', '|', ' ', ' '],
 //   [' ', ' ', ' ', ' ', '|', ' ', ' ', ' ', '+', '-', 'I', '-', '+'],
@@ -64,7 +65,7 @@ const map = [
 // @B+++B|+-L-+A+++A-+Hx
 // @B+++B|+-L-+A+++A-+Hx - Received
 
-// const map = [
+// const map: MapGrid = [
 //   ['@', '-', 'A', '-', '-', '+', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
 //   [' ', ' ', ' ', ' ', ' ', '|', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
 //   [' ', ' ', ' ', ' ', ' ', '+', '-', 'B', '-', '-', 'x', '-', 'C', '-', '-', 'D'],
@@ -74,7 +75,10 @@ const map = [
 // @-A--+|+-B--x
 // @-A--+|+-B--x - received
 
-const traversal = new PathTraversal(map)
+const mapController = MapController.getInstance()
+mapController.map = map
+
+const traversal = new PathTraversal()
 const result = traversal.traverse()
 console.log('Letters:', result.letters)
 console.log('Path:', result.path)

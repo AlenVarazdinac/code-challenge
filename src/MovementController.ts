@@ -1,10 +1,11 @@
 import { CONSTANTS } from './constants'
 import { isLetter } from './utils'
 import { BrokenPathError } from './errors'
-import { getCurrentChar } from './mapFunctions'
+import { MapController } from './MapController'
 
 export class MovementController {
   private map: MapGrid
+  private mapController: MapController
   private currentPosition: Position
   private direction: Direction
   private directions: Record<Direction, Position> = {
@@ -14,8 +15,9 @@ export class MovementController {
     right: { x: 1, y: 0 }
   }
 
-  constructor(map: MapGrid, startPosition: Position) {
-    this.map = map
+  constructor(startPosition: Position) {
+    this.mapController = MapController.getInstance()
+    this.map = this.mapController.map
     this.currentPosition = startPosition
     this.direction = 'right'
   }
@@ -40,29 +42,32 @@ export class MovementController {
     const nextChar = this.getNextChar(direction)
     console.log(`Checking if can move ${direction}, next char: '${nextChar}'`)
     const isVertical = direction === 'up' || direction === 'down'
-    const validChar = isVertical ? CONSTANTS.VERTICAL_PIPE : CONSTANTS.HORIZONTAL_PIPE
-    return nextChar === validChar || nextChar === CONSTANTS.INTERSECTION || isLetter(nextChar)
+    const validChar = isVertical
+      ? CONSTANTS.VERTICAL_PIPE
+      : CONSTANTS.HORIZONTAL_PIPE
+    return (
+      nextChar === validChar ||
+      nextChar === CONSTANTS.INTERSECTION ||
+      isLetter(nextChar)
+    )
   }
 
   private getNextChar(direction: Direction): string {
     const { x, y } = this.currentPosition
-    let nextChar: string
-    switch (direction) {
-      case 'up':
-        nextChar = y > 0 ? this.map[y - 1][x] : ' '
-        break
-      case 'down':
-        nextChar = y < this.map.length - 1 ? this.map[y + 1][x] : ' '
-        break
-      case 'left':
-        nextChar = x > 0 ? this.map[y][x - 1] : ' '
-        break
-      case 'right':
-        nextChar = x < this.map[y].length ? this.map[y][x + 1] : ' '
-        break
+    const { x: directionX, y: directionY } = this.directions[direction]
+    const newY = y + directionY
+    const newX = x + directionX
+
+    if (
+      newY < 0 ||
+      newY >= this.map.length ||
+      newX < 0 ||
+      newX >= this.map[newY].length
+    ) {
+      return ' '
     }
-    console.log(`Next char in direction ${direction}: '${nextChar}'`)
-    return nextChar
+
+    return this.map[newY][newX]
   }
 
   private getOppositeDirection(dir: Direction): Direction {
@@ -159,7 +164,8 @@ export class MovementController {
     }
 
     if (this.canMove(this.direction)) {
-      if (this.getCurrentChar() === CONSTANTS.INTERSECTION) throw new Error('Fake turn')
+      if (this.getCurrentChar() === CONSTANTS.INTERSECTION)
+        throw new Error('Fake turn')
       console.log(`Continuing in the same direction: ${this.direction}`)
       return
     }
@@ -175,25 +181,25 @@ export class MovementController {
   }
 
   private changeDirectionForPipe(char: string): void {
+    const isVertical = char === CONSTANTS.VERTICAL_PIPE
+    const isHorizontal = char === CONSTANTS.HORIZONTAL_PIPE
+    const isMovingHorizontally =
+      this.direction === 'left' || this.direction === 'right'
+
     if (
-      char === CONSTANTS.VERTICAL_PIPE &&
-      (this.direction === 'left' || this.direction === 'right')
+      (isVertical && isMovingHorizontally) ||
+      (isHorizontal && !isMovingHorizontally)
     ) {
       this.direction = this.canMove('up') ? 'up' : 'down'
-      console.log(`Changing to vertical direction: ${this.direction}`)
-    } else if (
-      char === CONSTANTS.HORIZONTAL_PIPE &&
-      (this.direction === 'up' || this.direction === 'down')
-    ) {
-      this.direction = this.canMove('left')
-        ? 'left'
-        : 'right'
-      console.log(`Changing to horizontal direction: ${this.direction}`)
+      if (isHorizontal) {
+        this.direction = this.canMove('left') ? 'left' : 'right'
+      }
+      console.log(`Changing direction to: ${this.direction}`)
     }
   }
 
   private getCurrentChar(): string {
     const position = this.getCurrentPosition()
-    return getCurrentChar(this.map, position.y, position.x)
+    return this.mapController.getCurrentChar(position.y, position.x)
   }
 }
