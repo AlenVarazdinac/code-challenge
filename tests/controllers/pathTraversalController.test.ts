@@ -10,7 +10,7 @@ describe('PathTraversal', () => {
 
   // Valid maps
   test('Basic example', () => {
-    const map = maps['map1']
+    const map: MapGrid = maps['map1']
 
     mapController.map = map
 
@@ -21,7 +21,7 @@ describe('PathTraversal', () => {
   })
 
   test('Go straight through intersections', () => {
-    const map = maps['map2']
+    const map: MapGrid = maps['map2']
 
     mapController.map = map
 
@@ -32,7 +32,7 @@ describe('PathTraversal', () => {
   })
 
   test('Letters may be found on turns', () => {
-    const map = maps['map3']
+    const map: MapGrid = maps['map3']
 
     mapController.map = map
 
@@ -43,7 +43,7 @@ describe('PathTraversal', () => {
   })
 
   test('Do not collect a letter from the same location twice', () => {
-    const map = maps['map4']
+    const map: MapGrid = maps['map4']
 
     mapController.map = map
 
@@ -54,7 +54,7 @@ describe('PathTraversal', () => {
   })
 
   test('Keep direction, even in a compact space', () => {
-    const map = maps['map5']
+    const map: MapGrid = maps['map5']
 
     mapController.map = map
 
@@ -65,7 +65,7 @@ describe('PathTraversal', () => {
   })
 
   test('Ignore stuff after end of path', () => {
-    const map = maps['map6']
+    const map: MapGrid = maps['map6']
 
     mapController.map = map
 
@@ -77,7 +77,7 @@ describe('PathTraversal', () => {
 
   // Invalid maps
   test('Missing start character', () => {
-    const map = [
+    const map: MapGrid = [
       [' ', ' ', ' ', '-', 'A', '-', '-', '-', '+'],
       [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '|'],
       ['x', '-', 'B', '-', '+', ' ', ' ', ' ', 'C'],
@@ -91,7 +91,7 @@ describe('PathTraversal', () => {
   })
 
   test('Missing end character', () => {
-    const map = [
+    const map: MapGrid = [
       ['@', '-', '-', 'A', '-', '-', '-', '+'],
       [' ', ' ', ' ', ' ', ' ', ' ', ' ', '|'],
       [' ', ' ', 'B', '-', '+', ' ', ' ', 'C'],
@@ -105,7 +105,7 @@ describe('PathTraversal', () => {
   })
 
   test('Multiple starts', () => {
-    let map = [
+    let map: MapGrid = [
       ['@', '-', '-', 'A', '-', '@', '-', '+'],
       [' ', ' ', ' ', ' ', ' ', ' ', ' ', '|'],
       ['x', '-', 'B', '-', '+', ' ', ' ', 'C'],
@@ -140,7 +140,7 @@ describe('PathTraversal', () => {
   })
 
   test('Fork in path', () => {
-    const map = [
+    const map: MapGrid = [
       [' ', ' ', ' ', ' ', ' ', 'x', '-', 'B'],
       [' ', ' ', ' ', ' ', ' ', ' ', ' ', '|'],
       ['@', '-', '-', 'A', '-', '-', '-', '+'],
@@ -157,7 +157,7 @@ describe('PathTraversal', () => {
   })
 
   test('Broken path', () => {
-    const map = [
+    const map: MapGrid = [
       ['@', '-', '-', 'A', '-', '+', ' ', ' '],
       [' ', ' ', ' ', ' ', ' ', '|', ' ', ' '],
       [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -172,7 +172,7 @@ describe('PathTraversal', () => {
   })
 
   test('Multiple starting paths', () => {
-    const map = [
+    const map: MapGrid = [
       ['x', '-', 'B', '-', '@', '-', 'A', '-', 'x']
     ]
 
@@ -183,7 +183,7 @@ describe('PathTraversal', () => {
   })
 
   test('Fake turn', () => {
-    const map = [
+    const map: MapGrid = [
       ['@', '-', 'A', '-', '+', '-', 'B', '-', 'x']
     ]
 

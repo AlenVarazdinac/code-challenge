@@ -67,7 +67,6 @@ export class PathTraversal {
 
   // PathTraversal
   private initializeTraversal(): void {
-    const position = this.getCurrentPosition()
     this.path = CONSTANTS.START_CHAR
   }
 
