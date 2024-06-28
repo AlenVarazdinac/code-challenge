@@ -1,5 +1,5 @@
-import { CONSTANTS } from './constants'
-import { directions } from './utils'
+import { CONSTANTS } from '../utils/constants'
+import { directions } from '../utils/utils'
 import { MovementController } from './MovementController'
 
 export class MapController {

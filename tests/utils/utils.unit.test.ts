@@ -1,5 +1,5 @@
-import { isLetter, getOppositeDirection, checkForInfiniteLoop } from '../utils'
-import { CONSTANTS } from '../constants'
+import { isLetter, getOppositeDirection, checkForInfiniteLoop } from '@/utils/utils'
+import { CONSTANTS } from '@/utils/constants'
 
 describe('utils', () => {
   describe('isLetter', () => {

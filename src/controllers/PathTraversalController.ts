@@ -1,8 +1,7 @@
 import { MovementController } from './MovementController'
 import { LetterController } from './LetterController'
-import { isLetter, directions } from './utils'
-import { CONSTANTS } from './constants'
-import { checkForInfiniteLoop } from './utils'
+import { isLetter, directions, checkForInfiniteLoop } from '../utils/utils'
+import { CONSTANTS } from '../utils/constants'
 import { MapController } from './MapController'
 
 export class PathTraversal {

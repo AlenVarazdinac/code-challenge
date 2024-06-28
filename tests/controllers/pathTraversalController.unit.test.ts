@@ -1,8 +1,8 @@
-import { PathTraversal } from '../PathTraversal'
-import { MovementController } from '../MovementController'
-import { MapController } from '../MapController'
+import { PathTraversal } from '@/controllers/PathTraversalController'
+import { MovementController } from '@/controllers/MovementController'
+import { MapController } from '@/controllers/MapController'
 
-jest.mock('../MovementController')
+jest.mock('@/controllers/MovementController')
 
 describe('PathTraversal', () => {
   let pathTraversal: PathTraversal

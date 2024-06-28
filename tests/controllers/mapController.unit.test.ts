@@ -1,4 +1,4 @@
-import { MapController } from '../MapController'
+import { MapController } from '@/controllers/MapController'
 
 describe('MapController', () => {
   let mapController: MapController

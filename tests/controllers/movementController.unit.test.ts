@@ -1,5 +1,5 @@
-import { MapController } from '../MapController'
-import { MovementController } from '../MovementController'
+import { MapController } from '@/controllers/MapController'
+import { MovementController } from '@/controllers/MovementController'
 
 describe('MovementController', () => {
   let movementController: MovementController

@@ -1,5 +1,6 @@
-import { MapController } from '../MapController'
-import { PathTraversal } from '../PathTraversal'
+import { MapController } from '@/controllers/MapController'
+import { PathTraversal } from '@/controllers/PathTraversalController'
+import { maps } from '@/data/mapData'
 
 describe('PathTraversal', () => {
   let mapController: MapController
@@ -9,13 +10,7 @@ describe('PathTraversal', () => {
 
   // Valid maps
   test('Basic example', () => {
-    const map = [
-      ['@', '-', '-', '-', 'A', '-', '-', '-', '+'],
-      [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '|'],
-      ['x', '-', 'B', '-', '+', ' ', ' ', ' ', 'C'],
-      [' ', ' ', ' ', ' ', '|', ' ', ' ', ' ', '|'],
-      [' ', ' ', ' ', ' ', '+', '-', '-', '-', '+']
-    ]
+    const map = maps['map1']
 
     mapController.map = map
 
@@ -26,15 +21,7 @@ describe('PathTraversal', () => {
   })
 
   test('Go straight through intersections', () => {
-    const map = [
-      ['@', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-      ['|', ' ', '+', '-', 'C', '-', '-', '+'],
-      ['A', ' ', '|', ' ', ' ', ' ', ' ', '|'],
-      ['+', '-', '-', '-', 'B', '-', '-', '+'],
-      [' ', ' ', '|', ' ', ' ', ' ', ' ', ' ', ' ', 'x'],
-      [' ', ' ', '|', ' ', ' ', ' ', ' ', ' ', ' ', '|'],
-      [' ', ' ', '+', '-', '-', '-', 'D', '-', '-', '+']
-    ]
+    const map = maps['map2']
 
     mapController.map = map
 
@@ -45,13 +32,7 @@ describe('PathTraversal', () => {
   })
 
   test('Letters may be found on turns', () => {
-    const map = [
-      ['@', '-', '-', '-', 'A', '-', '-', '-', '+'],
-      [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '|'],
-      ['x', '-', 'B', '-', '+', ' ', ' ', ' ', '|'],
-      [' ', ' ', ' ', ' ', '|', ' ', ' ', ' ', '|'],
-      [' ', ' ', ' ', ' ', '+', '-', '-', '-', 'C']
-    ]
+    const map = maps['map3']
 
     mapController.map = map
 
@@ -62,16 +43,7 @@ describe('PathTraversal', () => {
   })
 
   test('Do not collect a letter from the same location twice', () => {
-    const map = [
-      [' ', ' ', ' ', ' ', '+', '-', 'O', '-', 'N', '-', '+', ' ', ' '],
-      [' ', ' ', ' ', ' ', '|', ' ', ' ', ' ', ' ', ' ', '|', ' ', ' '],
-      [' ', ' ', ' ', ' ', '|', ' ', ' ', ' ', '+', '-', 'I', '-', '+'],
-      ['@', '-', 'G', '-', 'O', '-', '+', ' ', '|', ' ', '|', ' ', '|'],
-      [' ', ' ', ' ', ' ', '|', ' ', '|', ' ', '+', '-', '+', ' ', 'E'],
-      [' ', ' ', ' ', ' ', '+', '-', '+', ' ', ' ', ' ', ' ', ' ', 'S'],
-      [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '|'],
-      [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x']
-    ]
+    const map = maps['map4']
 
     mapController.map = map
 
@@ -82,12 +54,7 @@ describe('PathTraversal', () => {
   })
 
   test('Keep direction, even in a compact space', () => {
-    const map = [
-      [' ', '+', '-', 'L', '-', '+', ' ', ' '],
-      [' ', '|', ' ', ' ', '+', 'A', '-', '+'],
-      ['@', 'B', '+', ' ', '+', '+', ' ', 'H'],
-      [' ', '+', '+', ' ', ' ', ' ', ' ', 'x']
-    ]
+    const map = maps['map5']
 
     mapController.map = map
 
@@ -98,11 +65,7 @@ describe('PathTraversal', () => {
   })
 
   test('Ignore stuff after end of path', () => {
-    const map = [
-      ['@', '-', 'A', '-', '-', '+',],
-      [' ', ' ', ' ', ' ', ' ', '|',],
-      [' ', ' ', ' ', ' ', ' ', '+', '-', 'B', '-', '-', 'x', '-', 'C', '-', '-', 'D']
-    ]
+    const map = maps['map6']
 
     mapController.map = map
 

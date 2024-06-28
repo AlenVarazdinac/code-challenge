@@ -1,79 +1,11 @@
-import { MapController } from './MapController'
-import { PathTraversal } from './PathTraversal'
+import { MapController } from './controllers/MapController'
+import { PathTraversal } from './controllers/PathTraversalController'
+import { maps, expectedResults } from './data/mapData'
 
-const map: MapGrid = [
-  ['@', '-', '-', '-', 'A', '-', '-', '-', '+'],
-  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '|'],
-  ['x', '-', 'B', '-', '+', ' ', ' ', ' ', 'C'],
-  [' ', ' ', ' ', ' ', '|', ' ', ' ', ' ', '|'],
-  [' ', ' ', ' ', ' ', '+', '-', '-', '-', '+']
-]
-// Expected
-// ACB
-// @---A---+|C|+---+|+-B-x
-// @---A---+|C|+---+|+-B-x - received
-
-// const map: MapGrid = [
-//   ['@', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-//   ['|', ' ', '+', '-', 'C', '-', '-', '+'],
-//   ['A', ' ', '|', ' ', ' ', ' ', ' ', '|'],
-//   ['+', '-', '-', '-', 'B', '-', '-', '+'],
-//   [' ', ' ', '|', ' ', ' ', ' ', ' ', ' ', ' ', 'x'],
-//   [' ', ' ', '|', ' ', ' ', ' ', ' ', ' ', ' ', '|'],
-//   [' ', ' ', '+', '-', '-', '-', 'D', '-', '-', '+']
-// ]
-// Expected
-// ABCD
-// @|A+---B--+|+--C-+|-||+---D--+|x
-// @|A+---B--+|+--C-+|-||+---D--+|x - received
-
-// const map: MapGrid = [
-//   ['@', '-', '-', '-', 'A', '-', '-', '-', '+'],
-//   [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '|'],
-//   ['x', '-', 'B', '-', '+', ' ', ' ', ' ', '|'],
-//   [' ', ' ', ' ', ' ', '|', ' ', ' ', ' ', '|'],
-//   [' ', ' ', ' ', ' ', '+', '-', '-', '-', 'C']
-// ]
-// Expected
-// ACB
-// @---A---+|||C---+|+-B-x
-// @---A---+|||C---+|+-B-x - received
-
-// const map: MapGrid = [
-//   [' ', ' ', ' ', ' ', '+', '-', 'O', '-', 'N', '-', '+', ' ', ' '],
-//   [' ', ' ', ' ', ' ', '|', ' ', ' ', ' ', ' ', ' ', '|', ' ', ' '],
-//   [' ', ' ', ' ', ' ', '|', ' ', ' ', ' ', '+', '-', 'I', '-', '+'],
-//   ['@', '-', 'G', '-', 'O', '-', '+', ' ', '|', ' ', '|', ' ', '|'],
-//   [' ', ' ', ' ', ' ', '|', ' ', '|', ' ', '+', '-', '+', ' ', 'E'],
-//   [' ', ' ', ' ', ' ', '+', '-', '+', ' ', ' ', ' ', ' ', ' ', 'S'],
-//   [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '|'],
-//   [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x']
-// ]
-// Expected
-// GOONIES
-// @-G-O-+|+-+|O||+-O-N-+|I|+-+|+-I-+|ES|x
-// @-G-O-+|+-+|O||+-O-N-+|I|+-+|+-I-+|ES|x - received
-
-// const map: MapGrid = [
-//   [' ', '+', '-', 'L', '-', '+', ' ', ' '],
-//   [' ', '|', ' ', ' ', '+', 'A', '-', '+'],
-//   ['@', 'B', '+', ' ', '+', '+', ' ', 'H'],
-//   [' ', '+', '+', ' ', ' ', ' ', ' ', 'x']
-// ]
-// Expected
-// BLAH
-// @B+++B|+-L-+A+++A-+Hx
-// @B+++B|+-L-+A+++A-+Hx - Received
-
-// const map: MapGrid = [
-//   ['@', '-', 'A', '-', '-', '+', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-//   [' ', ' ', ' ', ' ', ' ', '|', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-//   [' ', ' ', ' ', ' ', ' ', '+', '-', 'B', '-', '-', 'x', '-', 'C', '-', '-', 'D']
-// ]
-// Expected
-// AB
-// @-A--+|+-B--x
-// @-A--+|+-B--x - received
+// Choose which map to use (map1 to map6)
+const mapKey = 'map2'
+const map: MapGrid = maps[mapKey]
+const expected = expectedResults[mapKey]
 
 const mapController = MapController.getInstance()
 mapController.map = map
@@ -82,3 +14,6 @@ const traversal = new PathTraversal()
 const result = traversal.traverse()
 console.log('Letters:', result.letters)
 console.log('Path:', result.path)
+
+console.log('Expected Letters:', expected.letters)
+console.log('Expected Path:', expected.path)

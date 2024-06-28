@@ -1,4 +1,4 @@
-import { isLetter } from './utils'
+import { isLetter } from '../utils/utils'
 
 export class LetterController {
   private collectedLetters: CollectedLetter[] = []

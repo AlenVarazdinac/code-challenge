@@ -1,10 +1,10 @@
-import { CONSTANTS } from './constants'
+import { CONSTANTS } from '../utils/constants'
 import {
   isLetter,
   directionCoordinates,
   directions,
   getOppositeDirection
-} from './utils'
+} from '../utils/utils'
 import { MapController } from './MapController'
 
 export class MovementController {
