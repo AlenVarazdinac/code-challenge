@@ -30,11 +30,15 @@ describe('utils', () => {
 
   describe('checkForInfiniteLoop', () => {
     test('should throw error when iterations exceed max', () => {
-      expect(() => checkForInfiniteLoop(CONSTANTS.MAX_ITERATIONS + 1)).toThrow('Possible infinite loop detected')
+      expect(() => checkForInfiniteLoop(CONSTANTS.MAX_ITERATIONS + 1)).toThrow(
+        'Possible infinite loop detected'
+      )
     })
 
     test('should not throw error when iterations are below max', () => {
-      expect(() => checkForInfiniteLoop(CONSTANTS.MAX_ITERATIONS - 1)).not.toThrow()
+      expect(() =>
+        checkForInfiniteLoop(CONSTANTS.MAX_ITERATIONS - 1)
+      ).not.toThrow()
     })
   })
 })

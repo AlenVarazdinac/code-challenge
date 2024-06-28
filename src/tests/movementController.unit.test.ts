@@ -1,6 +1,5 @@
 import { MapController } from '../MapController'
 import { MovementController } from '../MovementController'
-import { BrokenPathError } from '../errors'
 
 describe('MovementController', () => {
   let movementController: MovementController
@@ -29,11 +28,11 @@ describe('MovementController', () => {
     expect(movementController.getCurrentPosition()).toEqual({ x: 1, y: 0 })
   })
 
-  test('move should throw BrokenPathError when moving to empty space', () => {
+  test('move should throw Broken Path error when moving to empty space', () => {
     movementController['currentPosition'] = { x: 0, y: 1 }
     movementController['direction'] = 'right'
 
-    expect(() => movementController.move()).toThrow(BrokenPathError)
+    expect(() => movementController.move()).toThrow('Broken path')
   })
 
   test('canMove should return true for valid moves', () => {

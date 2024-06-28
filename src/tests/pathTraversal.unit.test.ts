@@ -2,7 +2,6 @@ import { PathTraversal } from '../PathTraversal'
 import { MovementController } from '../MovementController'
 import { MapController } from '../MapController'
 
-// Mock dependencies
 jest.mock('../MovementController')
 
 describe('PathTraversal', () => {
@@ -16,8 +15,13 @@ describe('PathTraversal', () => {
     mockMapController = MapController.getInstance()
     mockMapController.map = map
 
-    const MockedMovementController = MovementController as jest.MockedClass<typeof MovementController>
-    mockMovementController = new MockedMovementController({ x: 0, y: 0 }) as jest.Mocked<MovementController>
+    const MockedMovementController = MovementController as jest.MockedClass<
+      typeof MovementController
+    >
+    mockMovementController = new MockedMovementController({
+      x: 0,
+      y: 0
+    }) as jest.Mocked<MovementController>
     pathTraversal = new PathTraversal() as PathTraversal
 
     pathTraversal.movementController = mockMovementController
@@ -34,7 +38,10 @@ describe('PathTraversal', () => {
     // Setup move mock to update the position
     mockMovementController.move.mockImplementation(() => {
       const position = mockMovementController.getCurrentPosition()
-      mockMovementController.getCurrentPosition.mockReturnValue({ x: position.x + 1, y: position.y })
+      mockMovementController.getCurrentPosition.mockReturnValue({
+        x: position.x + 1,
+        y: position.y
+      })
     })
   })
 

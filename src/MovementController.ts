@@ -1,6 +1,10 @@
 import { CONSTANTS } from './constants'
-import { isLetter, directionCoordinates, directions } from './utils'
-import { BrokenPathError } from './errors'
+import {
+  isLetter,
+  directionCoordinates,
+  directions,
+  getOppositeDirection
+} from './utils'
 import { MapController } from './MapController'
 
 export class MovementController {
@@ -23,7 +27,7 @@ export class MovementController {
   public move(): void {
     const nextChar = this.getNextChar(this.direction)
     if (nextChar === CONSTANTS.EMPTY_SPACE || nextChar === undefined) {
-      throw new BrokenPathError('Broken path')
+      throw new Error('Broken path')
     }
     const directionChange = directionCoordinates[this.direction]
     this.currentPosition = {
@@ -63,29 +67,13 @@ export class MovementController {
     return this.map[newY][newX]
   }
 
-  private getOppositeDirection(dir: Direction): Direction {
-    switch (dir) {
-      case 'up':
-        return 'down'
-      case 'down':
-        return 'up'
-      case 'left':
-        return 'right'
-      case 'right':
-        return 'left'
-    }
-  }
-
   private changeDirectionAtIntersection(): void {
     let validDirections: Direction[] = []
 
     if (this.canMove(this.direction)) return
 
     for (const dir of directions) {
-      if (
-        dir !== this.getOppositeDirection(this.direction) &&
-        this.canMove(dir)
-      ) {
+      if (dir !== getOppositeDirection(this.direction) && this.canMove(dir)) {
         validDirections.push(dir)
       }
     }
@@ -132,9 +120,7 @@ export class MovementController {
   public changeDirection(): void {
     const char = this.getCurrentChar()
 
-    if (this.isAtStart(char)) {
-      return
-    }
+    if (this.isAtStart(char)) return
 
     if (this.canMove(this.direction)) {
       if (this.getCurrentChar() === CONSTANTS.INTERSECTION)

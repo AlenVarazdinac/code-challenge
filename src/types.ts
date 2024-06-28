@@ -14,6 +14,6 @@ type CollectedLetter = {
 }
 
 type TraversalResult = {
-  letters: string;
-  path: string;
+  letters: string
+  path: string
 }

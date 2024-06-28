@@ -1,12 +1,12 @@
-import { MapController } from "./MapController"
-import { PathTraversal } from "./PathTraversal"
+import { MapController } from './MapController'
+import { PathTraversal } from './PathTraversal'
 
 const map: MapGrid = [
   ['@', '-', '-', '-', 'A', '-', '-', '-', '+'],
   [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '|'],
   ['x', '-', 'B', '-', '+', ' ', ' ', ' ', 'C'],
   [' ', ' ', ' ', ' ', '|', ' ', ' ', ' ', '|'],
-  [' ', ' ', ' ', ' ', '+', '-', '-', '-', '+'],
+  [' ', ' ', ' ', ' ', '+', '-', '-', '-', '+']
 ]
 // Expected
 // ACB
@@ -68,7 +68,7 @@ const map: MapGrid = [
 // const map: MapGrid = [
 //   ['@', '-', 'A', '-', '-', '+', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
 //   [' ', ' ', ' ', ' ', ' ', '|', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-//   [' ', ' ', ' ', ' ', ' ', '+', '-', 'B', '-', '-', 'x', '-', 'C', '-', '-', 'D'],
+//   [' ', ' ', ' ', ' ', ' ', '+', '-', 'B', '-', '-', 'x', '-', 'C', '-', '-', 'D']
 // ]
 // Expected
 // AB

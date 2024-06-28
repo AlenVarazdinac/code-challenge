@@ -14,11 +14,11 @@ export class MapController {
   }
 
   public set map(map: MapGrid) {
-    this._map = map;
+    this._map = map
   }
 
   public get map(): MapGrid {
-    return this._map;
+    return this._map
   }
 
   public findStart(): Position {

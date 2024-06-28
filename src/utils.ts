@@ -1,4 +1,4 @@
-import { CONSTANTS } from "./constants"
+import { CONSTANTS } from './constants'
 
 export const directionCoordinates: Record<Direction, Position> = {
   up: { x: 0, y: -1 },

@@ -2,7 +2,6 @@ import { MovementController } from './MovementController'
 import { LetterController } from './LetterController'
 import { isLetter, directions } from './utils'
 import { CONSTANTS } from './constants'
-import { BrokenPathError } from './errors'
 import { checkForInfiniteLoop } from './utils'
 import { MapController } from './MapController'
 

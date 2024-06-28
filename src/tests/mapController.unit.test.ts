@@ -3,7 +3,7 @@ import { MapController } from '../MapController'
 describe('MapController', () => {
   let mapController: MapController
 
-  beforeEach(() => {
+  beforeAll(() => {
     mapController = MapController.getInstance()
   })
 
@@ -52,14 +52,18 @@ describe('MapController', () => {
       const mockMovementController = {
         canMove: jest.fn().mockImplementation((dir) => dir === 'right')
       }
-      expect(() => mapController.checkForMultipleStartingPaths(mockMovementController as any)).not.toThrow()
+      expect(() =>
+        mapController.checkForMultipleStartingPaths(mockMovementController as any)
+      ).not.toThrow()
     })
 
     test('should throw error for multiple starting paths', () => {
       const mockMovementController = {
         canMove: jest.fn().mockImplementation((dir) => ['right', 'down'].includes(dir))
       }
-      expect(() => mapController.checkForMultipleStartingPaths(mockMovementController as any)).toThrow('Multiple starting paths')
+      expect(() =>
+        mapController.checkForMultipleStartingPaths(mockMovementController as any)
+      ).toThrow('Multiple starting paths')
     })
   })
 })
