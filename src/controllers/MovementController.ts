@@ -24,6 +24,10 @@ export class MovementController {
     return { ...this.currentPosition }
   }
 
+  /**
+   * Moves the current position one step in the current direction
+   * @throws {Error} If the next position is invalid or empty
+   */
   public move(): void {
     const nextChar = this.getNextChar(this.direction)
     if (nextChar === CONSTANTS.EMPTY_SPACE || nextChar === undefined) {
@@ -36,6 +40,11 @@ export class MovementController {
     }
   }
 
+  /**
+   * Checks if movement in a given direction is possible
+   * @param {Direction} direction - direction to check for next move
+   * @returns {boolean} True if movement is possible, false otherwise
+   */
   public canMove(direction: Direction): boolean {
     const nextChar = this.getNextChar(direction)
     const isVertical = direction === 'up' || direction === 'down'

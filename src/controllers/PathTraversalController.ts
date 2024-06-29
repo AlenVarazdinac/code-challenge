@@ -46,7 +46,11 @@ export class PathTraversal {
     }
   }
 
-  // PathTraversal
+  /**
+   * Traverses the map from start to end, collecting letters along the way
+   * @returns {TraversalResult} Object containing the collected letters and the path taken
+   * @throws {Error} If an invalid path or infinite loop is detected
+   */
   public traverse(): { letters: string; path: string } {
     this.initializeTraversal()
     this.checkForMultipleStartingPaths()
@@ -65,12 +69,10 @@ export class PathTraversal {
     return this.getTraversalResult()
   }
 
-  // PathTraversal
   private initializeTraversal(): void {
     this.path = CONSTANTS.START_CHAR
   }
 
-  // MapController
   private isAtEnd(): boolean {
     const char = this.getCurrentChar()
     if (char === CONSTANTS.END_CHAR) {
@@ -82,6 +84,10 @@ export class PathTraversal {
     return false
   }
 
+  /**
+   * Processes the current position on the map.
+   * Collects letters if present and changes direction if necessary.
+   */
   private processCurrentPosition(): void {
     const position = this.getCurrentPosition()
     const char = this.getCurrentChar()

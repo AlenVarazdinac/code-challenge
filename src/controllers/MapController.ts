@@ -21,6 +21,11 @@ export class MapController {
     return this._map
   }
 
+  /**
+   * Finds the starting position on the map
+   * @returns {Position} Coordinates of the start character
+   * @throws {Error} If the start character is not found on the map
+   */
   public findStart(): Position {
     for (let y = 0; y < this.map.length; y++) {
       for (let x = 0; x < this.map[y].length; x++) {
@@ -43,6 +48,10 @@ export class MapController {
     throw new Error('End character not found')
   }
 
+  /**
+   * Validates that there is only one start position on the map
+   * @throws {Error} If multiple start characters are found
+   */
   public validateSingleStart(): void {
     let startAmount = 0
     for (let y = 0; y < this.map.length; y++) {
@@ -59,6 +68,11 @@ export class MapController {
     return this.map[positionY][positionX]
   }
 
+  /**
+   * Checks if there are multiple valid paths from the starting position
+   * @param {MovementController} movementController - controller used to check valid moves
+   * @throws {Error} If more than one valid starting path is found
+   */
   public checkForMultipleStartingPaths(
     movementController: MovementController
   ): void {
