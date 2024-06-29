@@ -29,3 +29,8 @@ export const checkForInfiniteLoop = (iterations: number): void => {
     throw new Error('Possible infinite loop detected')
   }
 }
+
+const validCharacters = new Set('ABCDEFGHIJKLMNOPQRSTUVWXYZ@-|+x ')
+export const isValidCharacter = (char: string): boolean => {
+  return validCharacters.has(char)
+}

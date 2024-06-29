@@ -66,4 +66,42 @@ describe('MapController', () => {
       ).toThrow('Multiple starting paths')
     })
   })
+
+  describe('validateMap', () => {
+    it('should not throw an error for a valid map', () => {
+      const validMap = [
+        ['@', '-', 'A'],
+        [' ', ' ', '|'],
+        ['x', '-', 'B']
+      ]
+
+      expect(() => {
+        mapController.map = validMap
+      }).not.toThrow()
+    })
+
+    it('should throw an error for a map with invalid character', () => {
+      const invalidMap = [
+        ['@', '-', 'A'],
+        [' ', '!', '|'],
+        ['x', '-', 'B']
+      ]
+
+      expect(() => {
+        mapController.map = invalidMap
+      }).toThrow("Invalid character '!' at position (1, 1)")
+    })
+
+    it('should throw an error for a map with lowercase letter', () => {
+      const invalidMap = [
+        ['@', '-', 'A'],
+        [' ', ' ', '|'],
+        ['x', '-', 'b']
+      ]
+
+      expect(() => {
+        mapController.map = invalidMap
+      }).toThrow("Invalid character 'b' at position (2, 2)")
+    })
+  })
 })

@@ -1,6 +1,6 @@
 import { MovementController } from './MovementController'
 import { LetterController } from './LetterController'
-import { isLetter, directions, checkForInfiniteLoop } from '../utils/utils'
+import { isLetter, checkForInfiniteLoop } from '../utils/utils'
 import { CONSTANTS } from '../utils/constants'
 import { MapController } from './MapController'
 
@@ -32,20 +32,6 @@ export class PathTraversal {
     return this.movementController.getCurrentPosition()
   }
 
-  private checkForMultipleStartingPaths(): void {
-    let validPaths = 0
-
-    for (const dir of directions) {
-      if (this.movementController.canMove(dir)) {
-        validPaths++
-      }
-    }
-
-    if (validPaths > 1) {
-      throw new Error('Multiple starting paths')
-    }
-  }
-
   /**
    * Traverses the map from start to end, collecting letters along the way
    * @returns {TraversalResult} Object containing the collected letters and the path taken
@@ -53,7 +39,7 @@ export class PathTraversal {
    */
   public traverse(): { letters: string; path: string } {
     this.initializeTraversal()
-    this.checkForMultipleStartingPaths()
+    this.mapController.checkForMultipleStartingPaths(this.movementController)
 
     let iterations = 0
 

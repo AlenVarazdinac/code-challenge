@@ -1,5 +1,5 @@
 import { CONSTANTS } from '../utils/constants'
-import { directions } from '../utils/utils'
+import { directions, isValidCharacter } from '../utils/utils'
 import { MovementController } from './MovementController'
 
 export class MapController {
@@ -15,6 +15,7 @@ export class MapController {
 
   public set map(map: MapGrid) {
     this._map = map
+    this.validateMap()
   }
 
   public get map(): MapGrid {
@@ -27,24 +28,26 @@ export class MapController {
    * @throws {Error} If the start character is not found on the map
    */
   public findStart(): Position {
-    for (let y = 0; y < this.map.length; y++) {
-      for (let x = 0; x < this.map[y].length; x++) {
-        if (this.map[y][x] === CONSTANTS.START_CHAR) {
-          return { x, y }
-        }
+    let startPosition: Position | null = null
+    this.forEachCell((char, x, y) => {
+      if (char === CONSTANTS.START_CHAR) {
+        startPosition = { x, y }
       }
-    }
+    })
+
+    if (startPosition) return startPosition
     throw new Error('Missing start character')
   }
 
   public findEndPosition(): Position {
-    for (let y = 0; y < this.map.length; y++) {
-      for (let x = 0; x < this.map[y].length; x++) {
-        if (this.map[y][x] === CONSTANTS.END_CHAR) {
-          return { x, y }
-        }
+    let endPosition: Position | null = null
+    this.forEachCell((char, x, y) => {
+      if (char === CONSTANTS.END_CHAR) {
+        endPosition = { x, y }
       }
-    }
+    })
+
+    if (endPosition) return endPosition
     throw new Error('End character not found')
   }
 
@@ -54,13 +57,11 @@ export class MapController {
    */
   public validateSingleStart(): void {
     let startAmount = 0
-    for (let y = 0; y < this.map.length; y++) {
-      for (let x = 0; x < this.map[y].length; x++) {
-        if (this.map[y][x] === CONSTANTS.START_CHAR) {
-          startAmount += 1
-        }
+    this.forEachCell((char) => {
+      if (char === CONSTANTS.START_CHAR) {
+        startAmount += 1
       }
-    }
+    })
     if (startAmount > 1) throw new Error('Multiple starts')
   }
 
@@ -86,6 +87,26 @@ export class MapController {
 
     if (validPaths > 1) {
       throw new Error('Multiple starting paths')
+    }
+  }
+
+  private validateMap(): void {
+    this.forEachCell((char, x, y) => {
+      if (!isValidCharacter(this.map[y][x])) {
+        throw new Error(`Invalid character '${this.map[y][x]}' at position (${x}, ${y})`)
+      }
+    })
+  }
+
+  /**
+   * Iterates over each cell in the map and applies the callback function
+   * @param callback function to apply to each cell
+   */
+  private forEachCell(callback: (char: MapChar, x: number, y: number) => void): void {
+    for (let y = 0; y < this.map.length; y++) {
+      for (let x = 0; x < this.map[y].length; x++) {
+        callback(this.map[y][x], x, y)
+      }
     }
   }
 }
