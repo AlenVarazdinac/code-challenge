@@ -33,7 +33,7 @@ x ending point
 - move horizontal
 + intersection (for changing direction)
 ' ' empty space (non traversable areas)
-A-Z letters that will be collected
+A-Z letters that will be collected (can also be used for changing direction)
 ```
 2. Initialize the `MapController` with the map you create
 3. Create a `PathTraversal` instance
